@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vintage Canvas | Retro Art Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-gray: #2a2a2a;
+            --medium-gray: #444;
+            --light-gray: #dcdcdc;
+            --off-white: #f5f5f5;
+            --accent: #c9a88c;
+            --shadow: rgba(0, 0, 0, 0.4);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background-color: var(--off-white);
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0,0,0,0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0,0,0,0.05) 0%, transparent 20%);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            color: white;
+            padding: 80px 0 120px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            color: var(--accent);
+            text-shadow: 0 0 15px rgba(201, 168, 140, 0.3);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: var(--light-gray);
+            margin-bottom: 30px;
+        }
+        
+        .hero-text {
+            font-size: 1.8rem;
+            line-height: 1.5;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(201, 168, 140, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(201, 168, 140, 0.05) 0%, transparent 40%);
+            z-index: 1;
+        }
+        
+        .header-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, 
+                transparent, 
+                transparent 2px, 
+                rgba(201, 168, 140, 0.05) 2px, 
+                rgba(201, 168, 140, 0.05) 4px);
+            z-index: 1;
+            opacity: 0.3;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(42, 42, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin: 0 15px;
+        }
+        
+        .nav-menu a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            color: var(--accent);
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        /* Gallery Section */
+        .section-title {
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            font-size: 2.8rem;
+            margin: 80px 0 50px;
+            color: var(--dark-gray);
+            position: relative;
+            letter-spacing: 3px;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 2px;
+            background: var(--accent);
+            margin: 15px auto;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 35px;
+            margin-bottom: 80px;
+        }
+        
+        .art-card {
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        
+        .art-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+        
+        .art-image {
+            height: 350px;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .art-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+            z-index: 1;
+        }
+        
+        .art-info {
+            padding: 25px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .art-title {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            color: var(--dark-gray);
+        }
+        
+        .art-year {
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .art-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* Featured Section */
+        .featured-section {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            color: white;
+            padding: 80px 0;
+            margin: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .featured-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .featured-image {
+            flex: 1;
+            height: 500px;
+            border: 8px solid var(--accent);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .featured-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .featured-details {
+            flex: 1;
+            padding: 30px;
+        }
+        
+        .featured-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+        
+        .featured-year {
+            font-size: 1.2rem;
+            color: var(--light-gray);
+            margin-bottom: 20px;
+        }
+        
+        .featured-desc {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            color: #ddd;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 12px 30px;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: var(--accent);
+            color: #2a2a2a;
+            box-shadow: 0 0 20px rgba(201, 168, 140, 0.4);
+        }
+        
+        /* About Section */
+        .about-section {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .about-image {
+            flex: 1;
+            height: 500px;
+            background: linear-gradient(45deg, #e0e0e0, #f0f0f0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid var(--medium-gray);
+        }
+        
+        .about-image i {
+            font-size: 6rem;
+            color: var(--medium-gray);
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            color: var(--dark-gray);
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            background: var(--dark-gray);
+            color: white;
+            padding: 80px 0;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .contact-item {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .contact-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .contact-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        .contact-info {
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: var(--light-gray);
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+        
+        .footer-content {
+            margin-bottom: 30px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--accent);
+            color: #1a1a1a;
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .featured-content,
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .featured-image,
+            .about-image {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .hero-text {
+                font-size: 1.4rem;
+            }
+            
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+        .delay-5 { animation-delay: 1s; }
+        .delay-6 { animation-delay: 1.2s; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <a href="#" class="nav-logo">VINTAGE CANVAS</a>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#featured">Featured</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header id="home">
+        <div class="header-overlay"></div>
+        <div class="header-pattern"></div>
+        <div class="container header-content">
+            <h1 class="logo floating">VINTAGE CANVAS</h1>
+            <p class="tagline">RETRO ART GALLERY</p>
+            <p class="hero-text">A curated collection of timeless masterpieces from the golden age of monochrome artistry</p>
+        </div>
+    </header>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="container">
+        <h2 class="section-title">Our Collection</h2>
+        <div class="gallery">
+            <!-- Art Card 1 -->
+            <div class="art-card floating delay-1">
+                <div class="art-image" style="background-image: url('https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="art-info">
+                    <h3 class="art-title">Urban Symphony</h3>
+                    <span class="art-year">1954</span>
+                    <p class="art-description">A dramatic portrayal of city life in the 1950s, capturing the rhythm and energy of metropolitan existence through stark contrasts.</p>
+                </div>
+            </div>
+            
+            <!-- Art Card 2 -->
+            <div class="art-card floating delay-2">
+                <div class="art-image" style="background-image: url('https://images.unsplash.com/photo-1578301978010-e2e2a4e0a1d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="art-info">
+                    <h3 class="art-title">Portrait of Melancholy</h3>
+                    <span class="art-year">1949</span>
+                    <p class="art-description">An introspective study of human emotion, rendered in delicate shades of gray to emphasize the depth of feeling.</p>
+                </div>
+            </div>
+            
+            <!-- Art Card 3 -->
+            <div class="art-card floating delay-3">
+                <div class="art-image" style="background-image: url('https://images.unsplash.com/photo-1578301978142-42d4f5d6e5a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="art-info">
+                    <h3 class="art-title">Industrial Dawn</h3>
+                    <span class="art-year">1957</span>
+                    <p class="art-description">A tribute to the industrial revolution, showcasing the raw power and geometric beauty of machinery and architecture.</p>
+                </div>
+            </div>
+            
+            <!-- Art Card 4 -->
+            <div class="art-card floating delay-4">
+                <div class="art-image" style="background-image: url('https://images.unsplash.com/photo-1578301978158-4c0b4b5b5b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="art-info">
+                    <h3 class="art-title">Silent Forest</h3>
+                    <span class="art-year">1952</span>
+                    <p class="art-description">A contemplative landscape exploring the interplay of light and shadow in nature, rendered in subtle monochromatic tones.</p>
+                </div>
+            </div>
+            
+            <!-- Art Card 5 -->
+            <div class="art-card floating delay-5">
+                <div class="art-image" style="background-image: url('https://images.unsplash.com/photo-1578301978205-c5b5b5b5b5b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="art-info">
+                    <h3 class="art-title">Jazz Reverie</h3>
+                    <span class="art-year">1955</span>
+                    <p class="art-description">An abstract interpretation of jazz music, translating rhythm and melody into visual patterns of light and dark.</p>
+                </div>
+            </div>
+            
+            <!-- Art Card 6 -->
+            <div class="art-card floating delay-6">
+                <div class="art-image" style="background-image: url('https://images.unsplash.com/photo-1578301978255-b5b5b5b5b5b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="art-info">
+                    <h3 class="art-title">Timeless Elegance</h3>
+                    <span class="art-year">1947</span>
+                    <p class="art-description">A classic portrait capturing the grace and sophistication of the 1940s, emphasizing form over detail.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Section -->
+    <section id="featured" class="featured-section">
+        <div class="container featured-content">
+            <div class="featured-image">
+                <img src="https://images.unsplash.com/photo-1578301978055-5abeb5b5b5b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Featured Artwork">
+            </div>
+            <div class="featured-details">
+                <h2 class="featured-title">The Eternal Muse</h2>
+                <p class="featured-year">1953 • Silver Gelatin Print • 24" × 30"</p>
+                <p class="featured-desc">Considered the masterpiece of our collection, this photograph captures a moment of profound serenity during the post-war era. The composition demonstrates exceptional mastery of light and shadow, creating a timeless image that speaks to the resilience of the human spirit. The subject's enigmatic gaze draws viewers into a contemplative state, making this piece a favorite among art historians.</p>
+                <a href="#" class="btn">View Exhibition</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container about-content">
+            <div class="about-image">
+                <i class="fas fa-palette"></i>
+            </div>
+            <div class="about-text">
+                <h2 class="about-title">Our Story</h2>
+                <p>Founded in 1985, Vintage Canvas began as a passion project to preserve and showcase the often-overlooked masterpieces of the mid-20th century. Our founder, Elena Marchetti, discovered a collection of forgotten photographs in her grandmother's attic that sparked a lifelong dedication to preserving this unique artistic period.</p>
+                <p>Today, our gallery houses over 500 pieces from renowned artists of the 1940s through 1960s, focusing on works created in monochrome and limited color palettes. We believe these pieces capture a particular emotional depth and timelessness that resonates with contemporary audiences.</p>
+                <p>Each artwork in our collection has been carefully restored and preserved using archival techniques to ensure these treasures remain accessible for future generations. Our team includes specialists in conservation, art history, and curatorial studies.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Visit Us</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="contact-title">Location</h3>
+                    <p class="contact-info">123 Heritage Boulevard<br>Arts District, New York<br>NY 10013</p>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="contact-title">Opening Hours</h3>
+                    <p class="contact-info">Tuesday - Sunday: 10am - 6pm<br>Monday: Closed<br>Holidays: 12pm - 5pm</p>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3 class="contact-title">Contact</h3>
+                    <p class="contact-info">+1 (212) 555-7890<br>info@vintagecanvas.gallery<br>membership@vintagecanvas.gallery</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <h3>VINTAGE CANVAS</h3>
+            <p>PRESERVING THE GOLDEN AGE OF ARTISTIC EXPRESSION</p>
+            
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-pinterest"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            
+            <p class="copyright">&copy; 2026 Vintage Canvas Gallery. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Smooth scrolling for navigation links
+            $('a[href^="#"]').on('click', function(e) {
+                e.preventDefault();
+                var target = $($(this).attr('href'));
+                if(target.length) {
+                    $('html, body').animate({
+                        scrollTop: target.offset().top - 80
+                    }, 1000);
+                }
+            });
+
+            // Sticky navigation
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 100) {
+                    $('nav').addClass('sticky');
+                } else {
+                    $('nav').removeClass('sticky');
+                }
+            });
+
+            // Hover effect for gallery cards
+            $('.art-card').hover(
+                function() {
+                    $(this).find('.art-image').css('transform', 'scale(1.05)');
+                },
+                function() {
+                    $(this).find('.art-image').css('transform', 'scale(1)');
+                }
+            );
+
+            // Parallax effect for header
+            $(window).scroll(function() {
+                var scroll = $(window).scrollTop();
+                $('.header-overlay').css('transform', 'translateY(' + scroll * 0.3 + 'px)');
+            });
+
+            // Fade-in animation for elements
+            function animateOnScroll() {
+                $('.art-card, .section-title').each(function() {
+                    var elementTop = $(this).offset().top;
+                    var elementBottom = elementTop + $(this).outerHeight();
+                    var viewportTop = $(window).scrollTop();
+                    var viewportBottom = viewportTop + $(window).height();
+
+                    if (elementBottom > viewportTop && elementTop < viewportBottom) {
+                        $(this).addClass('animated');
+                    }
+                });
+            }
+
+            // Initial check
+            animateOnScroll();
+
+            // Check on scroll
+            $(window).scroll(animateOnScroll);
+
+            // Button hover effect
+            $('.btn').hover(
+                function() {
+                    $(this).css({
+                        'transform': 'translateY(-3px)',
+                        'box-shadow': '0 10px 20px rgba(201, 168, 140, 0.3)'
+                    });
+                },
+                function() {
+                    $(this).css({
+                        'transform': 'translateY(0)',
+                        'box-shadow': 'none'
+                    });
+                }
+            );
+        });
+    </script>
+</body>
+</html>

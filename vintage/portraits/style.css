@@ -1,0 +1,164 @@
+/* INTERVIEW TIP: Mention that using :root variables makes theming 
+   and maintenance easier, especially in team environments. */
+:root {
+    --bg-paper: #F2F0EB;
+    --text-primary: #2B2B2B;
+    --text-secondary: #595959;
+    --border-light: #D1D1D1;
+    --accent-hover: #4A4A4A;
+    --font-title: 'Playfair Display', serif;
+    --font-sub: 'Cinzel', serif;
+    --font-body: 'EB Garamond', serif;
+}
+
+/* Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-paper);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    /* INTERVIEW TIP: Mention 'line-height' for readability/accessibility. */
+}
+
+/* Header */
+.site-header {
+    text-align: center;
+    padding: 3rem 1rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.site-title {
+    font-family: var(--font-title);
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.site-tagline {
+    font-family: var(--font-sub);
+    color: var(--text-secondary);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Navigation */
+.main-nav {
+    text-align: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    /* INTERVIEW TIP: Mention 'flexbox' for layout alignment. */
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-family: var(--font-sub);
+    font-weight: 600;
+    transition: color 0.3s ease;
+    /* INTERVIEW TIP: Mention 'transition' for smooth UX. */
+}
+
+.main-nav a:hover {
+    color: var(--accent-hover);
+}
+
+/* Main Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Gallery Grid */
+.gallery-section {
+    margin-bottom: 4rem;
+}
+
+.section-title {
+    font-family: var(--font-title);
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+/* INTERVIEW TIP: Explain why you chose Grid over Flexbox here 
+   (2D layout vs 1D layout). */
+.portrait-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    /* INTERVIEW TIP: 'auto-fit' and 'minmax' make this responsive 
+       without media queries. */
+}
+
+/* Portrait Card */
+.portrait-card {
+    background: #fff;
+    border: 1px solid var(--border-light);
+    padding: 1rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.portrait-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.image-wrapper {
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.portrait-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: grayscale(100%);
+    /* INTERVIEW TIP: Mention CSS filters for visual effects 
+       instead of editing images in Photoshop. */
+    transition: filter 0.3s ease;
+}
+
+.portrait-card:hover .portrait-img {
+    filter: grayscale(0%);
+}
+
+.portrait-name {
+    font-family: var(--font-title);
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.portrait-meta {
+    font-family: var(--font-sub);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* Footer */
+.site-footer {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid var(--border-light);
+    margin-top: 4rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
